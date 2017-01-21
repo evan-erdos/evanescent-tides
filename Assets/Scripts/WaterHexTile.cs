@@ -7,6 +7,7 @@ public class WaterHexTile : MonoBehaviour {
     float bottom;
     public float Height {get;protected set;}
     public float FlowOut {get; protected set;}
+    public float GroundHeight {get; protected set;}
     [SerializeField] protected float initialHeight = 1;
     [SerializeField] protected float waterWeight = 0.15f;
     [SerializeField] protected float moonWeight = 1f;
@@ -58,7 +59,8 @@ public class WaterHexTile : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider col) {
-        var box = col.gameObject.GetComponent<WaterHexTile>();
-        if(box != null) adjacentTiles.Add(box);
+        var water = col.gameObject.GetComponent<WaterHexTile>();
+        GroundHeight = col.gameObject.GetComponent<IHexTile>()?.Height ?? 0;
+        if(water != null) adjacentTiles.Add(water);
     }
 }
