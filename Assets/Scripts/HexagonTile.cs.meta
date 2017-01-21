@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a8058517f2c504c8aa648b9800b8a294
+timeCreated: 1485034353
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - hexPrefab: {fileID: 1171603583398464, guid: ad1161875106c46fdb7c59ce1b963e49,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
