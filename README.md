@@ -1,10 +1,14 @@
 # evanescent-tides
 Entry for GGJ 2017, by Electric Heroin
 
+- Carter Williams
+- Ben Scott
+- Hugh "Smokey" Dyar
+
 ![Luna Go Home](/Assets/Concept Images/lunagohome.png)
 
 # Pitch
-A puzzle game where you control the moon, and thus the tide level, which you must utilize to solve puzzles. The magical realism spirit of The Little Prince.
+A puzzle game where you control the moon, and thus the tide level, which you must utilize to solve puzzles. The magical realism and childlike spirit of The Little Prince or Neil Gaiman novels.
 
 # Style
 The game will be played on a fairly small hexogonal grid. The hexagons/tiles are for visual style and for water physics calculations, and can/will be on the small side of things. ie: each "position" that the boat can be at (or the size of land bridges and other such things) can take up a multide of hexagons in the world.
