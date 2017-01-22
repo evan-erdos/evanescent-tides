@@ -29,8 +29,8 @@ public class WaterHexTile : MonoBehaviour {
         }
     }
 
-    void FixedUpdate() {
-        Flow();
+    void FixedUpdate() { // Flow();
+        adjacentTiles.ForEach(o => FlowTile(o));
         var finalHeight = Mathf.Clamp(Height, 0.5f, 4f);
         transform.localScale = new Vector3(1f,finalHeight,1f);
     }
@@ -48,13 +48,11 @@ public class WaterHexTile : MonoBehaviour {
 
         if (tile.MoonDistance < MoonDistance) {
             var moonDif = MoonDistance - tile.MoonDistance;
-            var moonFlowOut =  ( moonDif * moonWeight /  waterWeight );
-            totalFlow += moonFlowOut;
-            
+            totalFlow += ( moonDif * moonWeight /  waterWeight );
         }
 
         totalFlow *= Time.fixedDeltaTime / 10;
-        if (Height > totalFlow && GroundHeight + Height > tile.GroundHeight) {
+        if (Height > totalFlow) {
             Height = Height - totalFlow;
             tile.Height = tile.Height + totalFlow;
         }
@@ -70,18 +68,6 @@ public class WaterHexTile : MonoBehaviour {
 
     void OnTriggerEnter(Collider col) {
         var water = col.gameObject.GetComponent<WaterHexTile>();
-        var tiles = new List<GroundHexTile>(col.gameObject.GetComponents<GroundHexTile>());
         if(water != null) adjacentTiles.Add(water);
-        if(tiles == null) return;
-        List<GroundHexTile> eligibleTiles = new List<GroundHexTile>();
-        foreach(GroundHexTile tile in tiles){
-            if((transform.position.x - tile.gameObject.transform.position.x) < .9f && (transform.position.y - tile.gameObject.transform.position.y) < .9f ){
-                eligibleTiles.Add(tile);
-            }
-        }
-        if(eligibleTiles == null || !eligibleTiles.Any()) return;
-        var highest = eligibleTiles.OrderBy(o => o.Height).First();
-        
-        GroundHeight = highest.Height;
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-// using Input=UnityStandardAssets.CrossPlatformInput.CrossPlatformInputManager;
+// using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Cameras
 {
