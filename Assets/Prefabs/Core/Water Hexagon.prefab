@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4788873791789728}
   - component: {fileID: 33389422203280704}
   - component: {fileID: 23242212756217560}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: hexagon_tile_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 54112105288159568}
   - component: {fileID: 65355958331328138}
   - component: {fileID: 114380027877421044}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Water Hexagon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4833079686049046}
   - component: {fileID: 64810095111814568}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 4528584518095470}
   - component: {fileID: 33347474395004882}
   - component: {fileID: 23017305839932178}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: hexagon_tile_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 4156660558917086}
   - component: {fileID: 33567051379769412}
   - component: {fileID: 23679039360172870}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: hexagon_tile_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

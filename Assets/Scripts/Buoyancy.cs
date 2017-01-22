@@ -7,6 +7,7 @@ public class Buoyancy : MonoBehaviour {
     new Collider collider;
     new Rigidbody rigidbody;
 
+    public float offset = 1;
     public float density = 500;
     public int slicesPerAxis = 2;
     public bool isConcave = false;
@@ -208,9 +209,15 @@ public class Buoyancy : MonoBehaviour {
     }
 
     float GetWaterLevel() {
-        if (Physics.Raycast(transform.position, Vector3.down, out var hit, 2))
-            if (hit.collider.GetComponentInParent<WaterHexTile>())
-                return hit.point.y;
+        if (Physics.SphereCast(
+            origin: transform.position+transform.up*2,
+            direction: Vector3.down,
+            radius: 0.25f,
+            hitInfo: out var hit,
+            maxDistance: 2,
+            layerMask: 1<<LayerMask.NameToLayer("Water")))
+                if (hit.collider.GetComponentInParent<WaterHexTile>())
+                    return hit.point.y+offset;
         return 0;
     }
 
@@ -235,7 +242,7 @@ public class Buoyancy : MonoBehaviour {
         }
     }
 
-    void OnDontDrawGizmos() {
+    void OnDrawGizmos() {
         if (voxels == null || forces == null) return;
 
         const float gizmoSize = 0.05f;
