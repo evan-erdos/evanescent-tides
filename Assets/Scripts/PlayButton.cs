@@ -5,12 +5,5 @@ using UnityEngine.SceneManagement;
 
 public class PlayButton : MonoBehaviour {
 	[SerializeField] string scene = "Isle Of Entry";
-
-	// Use this for initialization
-	public void onClick(){
-		SceneManager.LoadSceneAsync("Base");
-
-		SceneManager.LoadSceneAsync(scene);
-
-	}
+	public void onClick() => WaveManager.LoadScene(scene);
 }

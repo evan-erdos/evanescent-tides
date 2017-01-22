@@ -4,4 +4,16 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Fly By Wire.unity
+  - enabled: 1
+    path: Assets/Scenes/Island/Menu.unity
+  - enabled: 1
+    path: Assets/Scenes/Base.unity
+  - enabled: 1
+    path: Assets/Scenes/Isle of Entry.unity
+  - enabled: 1
+    path: Assets/Scenes/Make The Jump.unity
+  - enabled: 1
+    path: Assets/Scenes/Underwater Cave Diving.unity
