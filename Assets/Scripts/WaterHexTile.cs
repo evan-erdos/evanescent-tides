@@ -8,6 +8,7 @@ public class WaterHexTile : MonoBehaviour {
     public float Height {get;protected set;}
     public float FlowOut {get; protected set;}
     public float GroundHeight {get; protected set;}
+    public float MoonDistance {get; protected set;}
     [SerializeField] protected float initialHeight = 1;
     [SerializeField] protected float waterWeight = 0.15f;
     [SerializeField] protected float moonWeight = 1f;
@@ -18,44 +19,49 @@ public class WaterHexTile : MonoBehaviour {
         bottom = transform.position.y;
         moon = Moon.singleton.transform;
         yield return new WaitForSeconds(0.1f);
-        print(adjacentTiles.Count);
+        GetComponents<Collider>().ForEach(o => o.enabled = false);
+        while (true) {
+            yield return new WaitForSeconds(0.1f);
+            MoonDistance = CalculateMoonDistances();
+        }
     }
 
-    void Update() {
-        Flow();
+    void FixedUpdate() {
+        // Flow();
         var finalHeight = Mathf.Clamp(Height, 0.5f, 4f);
         transform.localScale = new Vector3(1f,finalHeight,1f);
     }
 
-    void Flow() {
-        foreach (var box in adjacentTiles) {
-            var totalFlow = 0f;
-            if (Height > box.Height) {
-                var heightDif = Height - box.Height;
-                // var heightDif = box.Height - Height;
-                var earthFlowOut = ( heightDif / waterWeight );
-                totalFlow += earthFlowOut;
-            }
+    void Flow() => adjacentTiles.ForEach(o => FlowTile(o));
 
-            if (CalculateMoonDistances() > box.CalculateMoonDistances()){
-                var moonDif = CalculateMoonDistances() - box.CalculateMoonDistances();
-                var moonFlowOut =  ( moonDif * moonWeight /  waterWeight );
-                totalFlow += moonFlowOut;
-            }
+    void FlowTile(WaterHexTile tile) {
+        var totalFlow = 0f;
+        if (Height > tile.Height) {
+            var heightDif = Height - tile.Height;
+            var earthFlowOut = ( heightDif / waterWeight );
+            totalFlow += earthFlowOut;
+        }
 
-            totalFlow *= Time.deltaTime / 100;
-            FlowOut = totalFlow;
-            if (Height > 0){
-                Height = Height - totalFlow;
-                box.Height = box.Height + totalFlow;
-            }
+        if (MoonDistance < tile.MoonDistance) {
+            var moonDif = MoonDistance - tile.MoonDistance;
+            var moonFlowOut =  ( moonDif * moonWeight /  waterWeight );
+            totalFlow += moonFlowOut;
+        }
+
+        totalFlow *= Time.fixedDeltaTime / 10;
+        FlowOut = totalFlow;
+        if (Height > 0) {
+            Height = Height - totalFlow;
+            tile.Height = tile.Height + totalFlow;
         }
     }
 
     public float CalculateMoonDistances() {
-        var dx = Mathf.Abs(transform.position.x - moon.position.x);
-        var dz = Mathf.Abs(transform.position.z - moon.position.z);
-        return  Mathf.Pow(Mathf.Pow(dx,2) + Mathf.Pow(dz,2),.5f);
+        // var dx = Mathf.Abs(transform.position.x - moon.position.x);
+        // var dz = Mathf.Abs(transform.position.z - moon.position.z);
+        var displacement = moon.position - transform.position;
+        return displacement.sqrMagnitude*0.01f;
+        // return  Mathf.Pow(Mathf.Pow(dx,2) + Mathf.Pow(dz,2),0.5f);
     }
 
     void OnTriggerEnter(Collider col) {

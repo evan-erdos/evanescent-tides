@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HexagonTile : MonoBehaviour, IHexTile {
+public class GroundHexTile : MonoBehaviour, IHexTile {
     [SerializeField] protected GameObject hexPrefab;
     [SerializeField] protected float height = 1.5f;
     public float Height => height;
