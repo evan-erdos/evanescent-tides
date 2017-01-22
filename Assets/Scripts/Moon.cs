@@ -6,7 +6,8 @@ public class Moon : MonoBehaviour {
     new Rigidbody rigidbody;
     new AudioSource audio;
     Vector3 velocity, lastPosition;
-    public static Moon singleton {get; private set;}
+    public static Moon singleton {get;private set;}
+    public static Sailboat ship {get;set;}
     [SerializeField] protected float weight;
     [SerializeField] protected float movespeed;
     [SerializeField] protected AudioClip wind;

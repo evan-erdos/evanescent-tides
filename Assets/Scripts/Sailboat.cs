@@ -13,6 +13,7 @@ public class Sailboat : Thing {
     public event WaveAction KillEvent;
     public void Kill() => KillEvent(this, new WaveArgs());
     void Awake() {
+        Moon.ship = this;
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.centerOfMass = Vector3.down*3;
         onKill.AddListener((o,e) => OnKill());
