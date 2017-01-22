@@ -12,7 +12,7 @@ public class Moon : MonoBehaviour {
     void Awake() => singleton = this;
 
     void Update() {
-        // make this should be adjust to the camera angle
+        print(Input.GetAxis("Right Horizontal"));
         velocity = new Vector3(
             Input.GetAxis("Right Horizontal") * movespeed,0f,
             Input.GetAxis("Right Vertical") * -1f * movespeed);

@@ -207,7 +207,7 @@ public class Buoyancy : MonoBehaviour {
         }
     }
 
-    float GetWaterLevel(float x, float z) {
+    float GetWaterLevel() {
         if (Physics.Raycast(transform.position, Vector3.down, out var hit, 2))
             if (hit.collider.GetComponentInParent<WaterHexTile>())
                 return hit.point.y;
@@ -217,55 +217,42 @@ public class Buoyancy : MonoBehaviour {
     void FixedUpdate() {
         forces.Clear(); // For drawing force gizmos
 
-        foreach (var point in voxels)
-        {
+        foreach (var point in voxels) {
             var wp = transform.TransformPoint(point);
-            float waterLevel = GetWaterLevel(wp.x, wp.z);
+            var waterLevel = GetWaterLevel();
+            // print(waterLevel);
 
-            if (wp.y - voxelHalfHeight < waterLevel)
-            {
-                float k = (waterLevel - wp.y) / (2 * voxelHalfHeight) + 0.5f;
-                if (k > 1)
-                {
-                    k = 1f;
-                }
-                else if (k < 0)
-                {
-                    k = 0f;
-                }
-
+            if (wp.y - voxelHalfHeight < waterLevel) {
+                var k = (waterLevel - wp.y) / (2 * voxelHalfHeight) + 0.5f;
+                if (k > 1) k = 1f;
+                else if (k < 0) k = 0f;
                 var velocity = rigidbody.GetPointVelocity(wp);
                 var localDampingForce = -velocity * DAMPFER * rigidbody.mass;
                 var force = localDampingForce + Mathf.Sqrt(k) * localArchimedesForce;
                 rigidbody.AddForceAtPosition(force, wp);
-
                 forces.Add(new[] { wp, force }); // For drawing force gizmos
             }
         }
     }
 
-    /// <summary>
-    /// Draws gizmos.
-    /// </summary>
-    void OnDrawGizmos()
-    {
-        if (voxels == null || forces == null)
-        {
-            return;
-        }
+    void OnDontDrawGizmos() {
+        if (voxels == null || forces == null) return;
 
         const float gizmoSize = 0.05f;
         Gizmos.color = Color.yellow;
 
-        foreach (var p in voxels)
-        {
-            Gizmos.DrawCube(transform.TransformPoint(p), new Vector3(gizmoSize, gizmoSize, gizmoSize));
-        }
+        foreach (var p in voxels) Gizmos.DrawCube(
+            transform.TransformPoint(p),
+            new Vector3(gizmoSize, gizmoSize, gizmoSize));
 
         Gizmos.color = Color.cyan;
 
-        foreach (var force in forces)
-        {
+        Debug.DrawLine(transform.position, new Vector3(
+            transform.position.x,
+            GetWaterLevel(),
+            transform.position.z));
+
+        foreach (var force in forces) {
             Gizmos.DrawCube(force[0], new Vector3(gizmoSize, gizmoSize, gizmoSize));
             Gizmos.DrawLine(force[0], force[0] + force[1] / rigidbody.mass);
         }

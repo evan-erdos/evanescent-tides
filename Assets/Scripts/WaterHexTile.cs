@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WaterHexTile : MonoBehaviour {
+    bool isOddFrame;
     List<WaterHexTile> adjacentTiles = new List<WaterHexTile>();
     float bottom;
     public float Height {get;protected set;}
@@ -19,26 +20,42 @@ public class WaterHexTile : MonoBehaviour {
         Height = initialHeight;
         bottom = transform.position.y;
         moon = Moon.singleton.transform;
-        waterWeight = .007f;
-        yield return new WaitForSeconds(0.1f);
+        waterWeight = 0.007f;
+        yield return null;
         GetComponents<Collider>().ForEach(o => o.enabled = false);
-        while (true) {
-            yield return new WaitForSeconds(0.1f);
-            MoonDistance = CalculateMoonDistances();
-            moonWeight = Moon.singleton.Weight;
-        }
+        // StartCoroutine(CalculatingMoonDistance());
+        // StartCoroutine(CalculatingFlow());
+
     }
 
-    void FixedUpdate() { // Flow();
-        adjacentTiles.ForEach(o => FlowTile(o));
-        var finalHeight = Mathf.Clamp(Height, 0.5f, 4f);
-        transform.localScale = new Vector3(1f,finalHeight,1f);
+    // IEnumerator CalculatingMoonDistance() {
+    //     while (true) {
+    //         yield return new WaitForSeconds(0.1f);
+    //         MoonDistance = CalculateMoonDistances();
+    //         moonWeight = Moon.singleton.Weight;
+    //     }
+    // }
+
+    // IEnumerator CalculatingFlow() {
+    //     while (true) foreach (var tile in adjacentTiles) {
+    //         yield return new WaitForFixedUpdate();
+    //         FlowTile(tile);
+    //     }
+    // }
+
+
+    void FixedUpdate() {
+
+        MoonDistance = CalculateMoonDistances();
+        moonWeight = Moon.singleton.Weight;
+
+        foreach (var tile in adjacentTiles) FlowTile(tile);
+        transform.localScale = new Vector3(1f,Mathf.Clamp(Height,0.5f,4),1f);
     }
 
     void Flow() => adjacentTiles.ForEach(o => FlowTile(o));
 
     void FlowTile(WaterHexTile tile) {
-
         var totalFlow = 0f;
         if (Height > tile.Height) {
             var heightDif = Height - tile.Height;
@@ -61,13 +78,12 @@ public class WaterHexTile : MonoBehaviour {
     public float CalculateMoonDistances() {
         var dx = Mathf.Abs(transform.position.x - moon.position.x);
         var dz = Mathf.Abs(transform.position.z - moon.position.z);
-        // var displacement = moon.position - transform.position;
-        // return displacement.sqrMagnitude*0.01f;
         return  Mathf.Pow(Mathf.Pow(dx,2) + Mathf.Pow(dz,2),0.5f);
     }
 
     void OnTriggerEnter(Collider col) {
         var water = col.gameObject.GetComponent<WaterHexTile>();
-        if(water != null) adjacentTiles.Add(water);
+        if ((water is null) || adjacentTiles.Contains(water)) return;
+        adjacentTiles.Add(water);
     }
 }
