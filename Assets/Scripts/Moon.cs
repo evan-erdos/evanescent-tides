@@ -21,6 +21,9 @@ public class Moon : MonoBehaviour {
     void Update(){
         velocity = new Vector3(Input.GetAxis("Right Horizontal") * movespeed,0f,Input.GetAxis("Right Vertical") * -1f * movespeed); // make this should be adjust to the camera angle
         transform.Translate(velocity * Time.deltaTime);
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x,-40,40),transform.position.y,Mathf.Clamp(transform.position.z,-10,60));
+
+       
     }
 
     IEnumerator OnMouseOver() {
