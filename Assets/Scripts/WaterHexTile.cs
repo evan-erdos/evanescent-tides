@@ -45,7 +45,7 @@ public class WaterHexTile : MonoBehaviour {
 
             totalFlow *= Time.deltaTime / 100;
             FlowOut = totalFlow;
-            if (Height > 0){
+            if (Height > totalFlow && GroundHeight + Height > box.GroundHeight){ //this height is not the height that the player sees
                 Height = Height - totalFlow;
                 box.Height = box.Height + totalFlow;
             }
