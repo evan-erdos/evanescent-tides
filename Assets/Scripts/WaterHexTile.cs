@@ -27,7 +27,7 @@ public class WaterHexTile : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        // Flow();
+        Flow();
         var finalHeight = Mathf.Clamp(Height, 0.5f, 4f);
         transform.localScale = new Vector3(1f,finalHeight,1f);
     }
@@ -50,18 +50,18 @@ public class WaterHexTile : MonoBehaviour {
 
         totalFlow *= Time.fixedDeltaTime / 10;
         FlowOut = totalFlow;
-        if (Height > 0) {
+        if (Height > totalFlow && GroundHeight + Height > tile.GroundHeight) {
             Height = Height - totalFlow;
             tile.Height = tile.Height + totalFlow;
         }
     }
 
     public float CalculateMoonDistances() {
-        // var dx = Mathf.Abs(transform.position.x - moon.position.x);
-        // var dz = Mathf.Abs(transform.position.z - moon.position.z);
-        var displacement = moon.position - transform.position;
-        return displacement.sqrMagnitude*0.01f;
-        // return  Mathf.Pow(Mathf.Pow(dx,2) + Mathf.Pow(dz,2),0.5f);
+        var dx = Mathf.Abs(transform.position.x - moon.position.x);
+        var dz = Mathf.Abs(transform.position.z - moon.position.z);
+        // var displacement = moon.position - transform.position;
+        // return displacement.sqrMagnitude*0.01f;
+        return  Mathf.Pow(Mathf.Pow(dx,2) + Mathf.Pow(dz,2),0.5f);
     }
 
     void OnTriggerEnter(Collider col) {
