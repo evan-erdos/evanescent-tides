@@ -19,4 +19,18 @@ public class Sailboat : MonoBehaviour {
         rigidbody.AddForce(Vector3.forward*throttle*thrust);
         rigidbody.AddTorque(Vector3.right*angularAxis*manuevering);
     }
+    void OnCollisionEnter(Collision col){
+        print("!");
+        health -= col.impulse.magnitude;
+        if(health < 0){
+            Rigidbody rb;
+            foreach(Transform child in transform){
+                rb = child.gameObject.AddComponent<Rigidbody>();
+                rb.velocity = gameObject.GetComponent<Rigidbody>().velocity;
+                rb.AddForce(Random.insideUnitSphere ,ForceMode.Impulse);
+
+            }
+            transform.DetachChildren();
+        }
+    }
 }

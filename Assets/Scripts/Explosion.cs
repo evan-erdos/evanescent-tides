@@ -14,12 +14,14 @@ public class Explosion : MonoBehaviour {
 		
 	}
 
-	void OnCollisionEnter(Collision col){
-		if(col.impulse.magnitude > 100){
+	void OnTriggerEnter(Collider col){
+		print("!");
+		float alot = 10;
+		if(true){
 			Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-			rb.velocity = GetComponentInParent(typef(Rigidbody)).velocity;
+			rb.velocity = GetComponentInParent<Rigidbody>().velocity;
 			transform.parent = null;
-			rb.AddForce(Random.insideUnitSphere * col.impulse.magnitude,ForceMode.Impulse);
+			rb.AddForce(Random.insideUnitSphere * alot,ForceMode.Impulse);
 
 
 		}
