@@ -27,7 +27,7 @@ public class Moon : MonoBehaviour {
         lastPosition = transform.position;
         velocity = new Vector3(
             Input.GetAxis("Right Horizontal") * movespeed, 0,
-            Input.GetAxis("Right Vertical") * movespeed);
+            - Input.GetAxis("Right Vertical") * movespeed);
         if (!Physics.SphereCast(
                 origin: transform.position+rigidbody.velocity*Time.fixedDeltaTime*2,
                 radius: 2,

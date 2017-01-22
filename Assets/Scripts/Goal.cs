@@ -20,7 +20,7 @@ public class Goal : MonoBehaviour {
     IEnumerator Killing() {
         if (isKilling) yield break;
         isKilling = true;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(0.1f);
         WaveManager.LoadScene(scene);
         isKilling = false;
     }

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class Sailboat : Thing {
     new Rigidbody rigidbody;
     float angular, throttle;
+	bool jump;
     [SerializeField] protected float health = 1000;
     [SerializeField] protected float manuevering = 100;
     [SerializeField] protected float thrust = 1000;
@@ -23,11 +24,14 @@ public class Sailboat : Thing {
         // DontDestroyOnLoad(gameObject);
     }
 
-    void Update() => (angular, throttle) =
-        (Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+    void Update() => (angular, throttle, jump) =
+        (Input.GetAxis("Horizontal"), 
+			Input.GetAxis("Vertical"), 
+			Input.GetButtonDown("Jump"));
 
     void FixedUpdate() {
         if (transform.position.y<-20) Kill();
+		if (jump) rigidbody.AddForce(Vector3.up*1000);
         rigidbody.AddForce(-transform.forward*throttle*thrust);
         rigidbody.AddTorque(transform.up*angular*manuevering);
         transform.rotation = Quaternion.Slerp(
