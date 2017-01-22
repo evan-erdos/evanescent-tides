@@ -41,7 +41,6 @@ GameObject:
   - component: {fileID: 65355958331328138}
   - component: {fileID: 114380027877421044}
   - component: {fileID: 65029580553289096}
-  - component: {fileID: 64569272934526614}
   m_Layer: 0
   m_Name: Water Hexagon
   m_TagString: Untagged
@@ -300,20 +299,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64569272934526614
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1803228325337188}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300004, guid: a0877507399c942f7b11ae368c82e8d7, type: 3}
 --- !u!64 &64810095111814568
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -365,7 +350,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialHeight: 1
   waterWeight: 0.1
-  moonWeight: 1
 --- !u!205 &205784880989656228
 LODGroup:
   m_ObjectHideFlags: 1

@@ -4,22 +4,18 @@ using UnityEngine;
 
 public class Moon : MonoBehaviour {
     public static Moon singleton {get; private set;}
-    [SerializeField]
-    private float weight;
-    [SerializeField]
-    float movespeed;
+    [SerializeField] protected float weight;
+    [SerializeField] protected float movespeed;
     Vector3 velocity;
-    public float Weight {
-        get{
-            return weight;
-        }
-
-    }
+    public float Weight => weight;
 
     void Awake() => singleton = this;
 
-    void Update(){
-        velocity = new Vector3(Input.GetAxis("Right Horizontal") * movespeed,0f,Input.GetAxis("Right Vertical") * -1f * movespeed); // make this should be adjust to the camera angle
+    void Update() {
+        // make this should be adjust to the camera angle
+        velocity = new Vector3(
+            Input.GetAxis("Right Horizontal") * movespeed,0f,
+            Input.GetAxis("Right Vertical") * -1f * movespeed);
         transform.Translate(velocity * Time.deltaTime);
     }
 
