@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,18 +12,20 @@ public class WaterHexTile : MonoBehaviour {
     public float MoonDistance {get; protected set;}
     [SerializeField] protected float initialHeight = 1;
     [SerializeField] protected float waterWeight = 0.15f;
-    [SerializeField] protected float moonWeight = 1f;
+    float moonWeight;
     Transform moon;
 
     IEnumerator Start() {
         Height = initialHeight;
         bottom = transform.position.y;
         moon = Moon.singleton.transform;
+        waterWeight = .007f;
         yield return new WaitForSeconds(0.1f);
         GetComponents<Collider>().ForEach(o => o.enabled = false);
         while (true) {
             yield return new WaitForSeconds(0.1f);
             MoonDistance = CalculateMoonDistances();
+            moonWeight = Moon.singleton.Weight;
         }
     }
 
@@ -35,6 +38,7 @@ public class WaterHexTile : MonoBehaviour {
     void Flow() => adjacentTiles.ForEach(o => FlowTile(o));
 
     void FlowTile(WaterHexTile tile) {
+
         var totalFlow = 0f;
         if (Height > tile.Height) {
             var heightDif = Height - tile.Height;
@@ -42,14 +46,14 @@ public class WaterHexTile : MonoBehaviour {
             totalFlow += earthFlowOut;
         }
 
-        if (MoonDistance < tile.MoonDistance) {
+        if (tile.MoonDistance < MoonDistance) {
             var moonDif = MoonDistance - tile.MoonDistance;
             var moonFlowOut =  ( moonDif * moonWeight /  waterWeight );
             totalFlow += moonFlowOut;
+            
         }
 
         totalFlow *= Time.fixedDeltaTime / 10;
-        FlowOut = totalFlow;
         if (Height > totalFlow && GroundHeight + Height > tile.GroundHeight) {
             Height = Height - totalFlow;
             tile.Height = tile.Height + totalFlow;
@@ -66,7 +70,18 @@ public class WaterHexTile : MonoBehaviour {
 
     void OnTriggerEnter(Collider col) {
         var water = col.gameObject.GetComponent<WaterHexTile>();
-        GroundHeight = col.gameObject.GetComponent<IHexTile>()?.Height ?? 0;
+        var tiles = new List<GroundHexTile>(col.gameObject.GetComponents<GroundHexTile>());
         if(water != null) adjacentTiles.Add(water);
+        if(tiles == null) return;
+        List<GroundHexTile> eligibleTiles = new List<GroundHexTile>();
+        foreach(GroundHexTile tile in tiles){
+            if((transform.position.x - tile.gameObject.transform.position.x) < .9f && (transform.position.y - tile.gameObject.transform.position.y) < .9f ){
+                eligibleTiles.Add(tile);
+            }
+        }
+        if(eligibleTiles == null || !eligibleTiles.Any()) return;
+        var highest = eligibleTiles.OrderBy(o => o.Height).First();
+        
+        GroundHeight = highest.Height;
     }
 }

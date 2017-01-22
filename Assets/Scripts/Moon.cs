@@ -4,7 +4,24 @@ using UnityEngine;
 
 public class Moon : MonoBehaviour {
     public static Moon singleton {get; private set;}
+    [SerializeField]
+    private float weight;
+    [SerializeField]
+    float movespeed;
+    Vector3 velocity;
+    public float Weight {
+        get{
+            return weight;
+        }
+
+    }
+
     void Awake() => singleton = this;
+
+    void Update(){
+        velocity = new Vector3(Input.GetAxis("Right Horizontal") * movespeed,0f,Input.GetAxis("Right Vertical") * -1f * movespeed); // make this should be adjust to the camera angle
+        transform.Translate(velocity * Time.deltaTime);
+    }
 
     IEnumerator OnMouseOver() {
         while (Input.GetButton("Fire1")) {
