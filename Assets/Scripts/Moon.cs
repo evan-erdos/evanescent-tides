@@ -17,6 +17,10 @@ public class Moon : MonoBehaviour {
             Input.GetAxis("Right Horizontal") * movespeed,0f,
             Input.GetAxis("Right Vertical") * -1f * movespeed);
         transform.Translate(velocity * Time.deltaTime);
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x,-40,40),
+            transform.position.y,
+            Mathf.Clamp(transform.position.z,-10,60));
     }
 
     IEnumerator OnMouseOver() {
