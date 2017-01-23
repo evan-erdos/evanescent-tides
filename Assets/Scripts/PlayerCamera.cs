@@ -7,7 +7,7 @@ public class PlayerCamera : MonoBehaviour {
     float x, y; // , sensitivity = 1, range = 30;
 
     void Awake() => rigidbody = GetComponent<Rigidbody>();
-    void Start() => DontDestroyOnLoad(gameObject);
+    // void Start() => DontDestroyOnLoad(gameObject);
 
     // void Update() => (x,y) =
     //     (Input.GetAxis("Swivel Horizontal"), Input.GetAxis("Swivel Vertical"));

@@ -14,6 +14,15 @@ public class Goal : MonoBehaviour {
         if (o.GetComponentInParent<Sailboat>()) LoadLevel(scene);
     }
 
-    void LoadLevel(string scene) => SceneManager.LoadSceneAsync(scene);
+    void LoadLevel(string scene) => StartCoroutine(Killing());
+
+    bool isKilling;
+    IEnumerator Killing() {
+        if (isKilling) yield break;
+        isKilling = true;
+        yield return new WaitForSeconds(5);
+        WaveManager.LoadScene(scene);
+        isKilling = false;
+    }
 
 }

@@ -218,7 +218,7 @@ public class Buoyancy : MonoBehaviour {
             layerMask: 1<<LayerMask.NameToLayer("Water")))
                 if (hit.collider.GetComponentInParent<WaterHexTile>())
                     return hit.point.y+offset;
-        return 0;
+        return -100;
     }
 
     void FixedUpdate() {

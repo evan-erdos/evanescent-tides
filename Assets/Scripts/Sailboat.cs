@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Adventure.EvanescentTides;
+using UnityEngine.SceneManagement;
 
 public class Sailboat : Thing {
     new Rigidbody rigidbody;
@@ -17,14 +18,16 @@ public class Sailboat : Thing {
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.centerOfMass = Vector3.down*3;
         onKill.AddListener((o,e) => OnKill());
+        onKill.AddListener((o,e) => OnKill2());
         KillEvent += (o,e) => onKill?.Invoke(o,e);
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
     }
 
     void Update() => (angular, throttle) =
         (Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
     void FixedUpdate() {
+        if (transform.position.y<-20) Kill();
         rigidbody.AddForce(-transform.forward*throttle*thrust);
         rigidbody.AddTorque(transform.up*angular*manuevering);
         transform.rotation = Quaternion.Slerp(
@@ -48,5 +51,16 @@ public class Sailboat : Thing {
             o.gameObject.layer = LayerMask.NameToLayer("Default"));
         GetComponentsInChildren<Explosion>().ForEach(o => o.Detonate(rigidbody));
         enabled = false;
+    }
+
+    void OnKill2() => StartCoroutine(Killing());
+
+    bool isKilling;
+    IEnumerator Killing() {
+        if (isKilling) yield break;
+        isKilling = true;
+        yield return new WaitForSeconds(5);
+        WaveManager.LoadScene(SceneManager.GetActiveScene().name);
+        isKilling = false;
     }
 }
